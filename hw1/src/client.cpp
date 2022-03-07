@@ -23,13 +23,12 @@ private:
     // define one output port to comunicate to the server and
     // one input port to receive the trigger to start moving the
     // arm
-    // FILL IN THE CODE
-    BufferedPort<Bottle>   triggerReceivePort;
-    BufferedPort<Bottle>   serverPort;
-
+    Bottle bot,signal;
+    Port   outputPort;
+    Port   inputPort;
+    
     double angle, period;
     bool triggered;
-
 public:
 
     ClientMod(): angle(0.0), period(0.0), triggered(false)
@@ -40,22 +39,14 @@ public:
         // open all ports and check that everything is fine
         // output port: /client/output
         // input port: /client/input
-
-        // FILL IN THE CODE
-        if (!triggerReceivePort.open("/client/input"))
+        if (!inputPort.open("/client/input"))
         {
             return false;
         }
-        if (!serverPort.open("/client/output"))
+        if (!outputPort.open("/client/output"))
         {
             return false;
         }
-        while (serverPort.getOutputCount() == 0)
-        {
-            yInfo()<<"Waiting the connection to the server...";
-            yarp::os::Time::delay(0.3);
-        }
-
 
         return true;
     }
@@ -64,12 +55,13 @@ public:
     bool configure(ResourceFinder &rf)
     {
         // get "angle" input parameter
-        Bottle * b = triggerReceivePort.read();
-        angle = b->get(0).asFloat64();;
-
+        Bottle b;
+        inputPort.read(b);
+        angle = b.get(0).asFloat64();
+        
         // configure the ports
         bool conf = configPorts();
-        
+
         // Check if angle is passed by command line argument
         if (rf.check("angle"))
         {
@@ -94,9 +86,8 @@ public:
     bool close()
     {
         // close ports
-        // FILL IN THE CODE
-        triggerReceivePort.close();
-        serverPort.close();
+        inputPort.close();
+        outputPort.close();
         return true;
     }
 
@@ -104,33 +95,30 @@ public:
     bool interrupt()
     {
         // interrupt ports
-        // FILL IN THE CODE
-        triggerReceivePort.interrupt();
-        serverPort.interrupt();
+        inputPort.interrupt();
+        outputPort.interrupt();
         return true;
     }
 
     /****************************************************/
     bool updateModule()
     {
-        Bottle* signal = nullptr;
         if (!triggered)
         {
             // read from the input port the signal from the
             // trigger for starting to send data to the server
-            // FILL IN CODE
-            signal = triggerReceivePort.read();
+            inputPort.read(bot);
+            angle = bot.get(0).asFloat64();
+            period =bot.get(1).asFloat64();
             triggered = true;
         }
+
         // once triggered prepare the bottle containing the
         // angle and send it to the server through the
         // output port
-        // FILL IN CODE
-        
-        signal->addFloat64(angle);
-        signal->addFloat64(period);
-        serverPort.write(signal);
-        
+        signal.addFloat64(angle);
+        signal.addFloat64(period);
+        outputPort.write(signal);
         return true;
     }
 

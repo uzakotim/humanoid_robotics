@@ -1,0 +1,13 @@
+Test suite Test assignment motor control started...
+[INFO]  (Test assignment motor control) reports: yarpmanager is setting up the fixture...
+[ERROR] (Test assignment motor control) asserts error on (ret) with exception: yarpmanager (run) cannot setup the fixture because cannot run trigger on testnode : Timeout while waiting for testnode /icubSim/right_arm/rpc:i does not exist cannot run server on testnode : Timeout while waiting for testnode /trigger/output does not exist /icubSim/left_arm/rpc:i does not exist Failed to run trigger on testnode. (State: 1, parameter: --angle 26.0 --period 2.0) Failed to run server on testnode. (State: 1, parameter: ) Failed to run client on testnode. (State: 5, parameter: ) cannot ask /testnode to check for status of client (Blocked in broker semaphor)  due to  cannot ask /testnode to check for status of client (Blocked in broker semaphor)  due to  Failed to run iCub_SIM on testnode. (State: 5, parameter: ) cannot ask /testnode to check for status of iCub_SIM (Blocked in broker semaphor)  due to (SendMsg) connecting to /testnode cannot ask /testnode to check for status of iCub_SIM (Blocked in broker semaphor)  due to  cannot ask /testnode to check for status of iCub_SIM (Blocked in broker semaphor)  due to  cannot run client on testnode : cannot run client on /testnode 
+[INFO]  (Test assignment motor control) reports: yarpmanager is tearing down the fixture...
+Test suite Test assignment motor control failed!
+
+---------- summary -----------
+Total number of test suites  : 1
+Number of passed test suites : 0
+Number of failed test suites : 1
+Total number of test cases   : 0
+Number of passed test cases  : 0
+Number of failed test cases  : 0

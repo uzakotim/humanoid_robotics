@@ -1,0 +1,5 @@
+/usr/local/bin/server
+/usr/local/bin/client
+/usr/local/bin/trigger
+/usr/local/share/ICUBcontrib/applications/hw1-system.xml
+/usr/local/share/ICUBcontrib/applications/hw1.xml

@@ -1,0 +1,10 @@
+/root/b3m33hro-labs/lab3/hw1/smoke-test/build/build-code/CMakeFiles/server.dir
+/root/b3m33hro-labs/lab3/hw1/smoke-test/build/build-code/CMakeFiles/client.dir
+/root/b3m33hro-labs/lab3/hw1/smoke-test/build/build-code/CMakeFiles/trigger.dir
+/root/b3m33hro-labs/lab3/hw1/smoke-test/build/build-code/CMakeFiles/uninstall.dir
+/root/b3m33hro-labs/lab3/hw1/smoke-test/build/build-code/CMakeFiles/edit_cache.dir
+/root/b3m33hro-labs/lab3/hw1/smoke-test/build/build-code/CMakeFiles/rebuild_cache.dir
+/root/b3m33hro-labs/lab3/hw1/smoke-test/build/build-code/CMakeFiles/list_install_components.dir
+/root/b3m33hro-labs/lab3/hw1/smoke-test/build/build-code/CMakeFiles/install.dir
+/root/b3m33hro-labs/lab3/hw1/smoke-test/build/build-code/CMakeFiles/install/local.dir
+/root/b3m33hro-labs/lab3/hw1/smoke-test/build/build-code/CMakeFiles/install/strip.dir

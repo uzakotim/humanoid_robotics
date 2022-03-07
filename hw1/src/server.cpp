@@ -22,7 +22,7 @@ private:
 
     // define one input port to receive the angle from the client
     // FILL IN THE CODE
-    BufferedPort<Bottle>   inputPort;
+    Port                            inputPort;
 
     PolyDriver                       driver;
     IControlMode                    *imod;
@@ -34,6 +34,7 @@ private:
     double                          min, max;
     int                             nAxes;
 
+    Bottle bot;
 
     //Implement the BufferedPort callback, as soon as new data is coming
     void moveArm(Bottle* bot)
@@ -45,25 +46,25 @@ private:
             return;
         }
         double angle = bot->get(0).asFloat64();
+
         if(ipos)
         {
-            // the arm will move between -angle and angle
             if (invert)
+                {
+                    angle = -1 * angle;
+                    invert = false;
+                }
+                else
+                {
+                    invert = true;
+                }
+            if (angle < min || angle > max)
             {
-                angle = -1 * angle;
-                invert = false;
+                yError()<<"The angle is out the joint's limits";
+                return;
             }
-            else
-            {
-                invert = true;
-            }
-            // check that "angle" is inside the joint
-            // limits before moving, if so move the arm
-            if ((angle <= max) && (angle >= min))
-            {
-            }
-            // FILL IN CODE
 
+            ipos->positionMove(ax, angle);
         }
     }
 
@@ -77,7 +78,7 @@ public:
     {
         // open the input port /server/input
         // FILL IN THE CODE
-         if (!inputPort.open("/server/input"))
+        if (!inputPort.open("/server/input"))
         {
             return false;
         }
@@ -110,17 +111,14 @@ public:
         // tell the device we aim to control
         // in position mode all the joints
         ienc->getAxes(&nAxes);
-
+        std::vector<int> modes(nAxes,VOCAB_CM_POSITION);
+        imod->setControlModes(modes.data());
 
         // get limits of joint 2
-        // FILL IN THE CODE
-
-        // tell the device we aim to control
-        // in position mode all the joints
-        // FILL IN THE CODE
+        ilim->getLimits(ax, &min, &max);
 
         // set ref speed for the joint 2 to 40.0 deg/s
-        // FILL IN THE CODE
+        ipos->setRefSpeed(ax, 40.0);
 
         return true;
     }
@@ -148,35 +146,31 @@ public:
     /****************************************************/
     bool close()
     {
+        // close the port and close the PolyDriver
         inputPort.close();
         driver.close();
-        // close the port and close the PolyDriver
-        // FILL IN THE CODE
         return true;
     }
 
     /****************************************************/
     bool interrupt()
     {
-        inputPort.interrupt();
+
         // interrupt the port
-        // FILL IN THE CODE
+        inputPort.interrupt();
         return true;
     }
 
     /****************************************************/
     bool updateModule()
     {
-        Bottle* bot = nullptr;
         // read from the input port passing "bot"
-        // FILL IN THE CODE
-        bot = inputPort.read();
-        if (bot)
-        {
-            // try to move the arm
-            moveArm(bot);
-        }
+        inputPort.read(bot);
 
+        if(&bot){
+            // try to move the arm
+            moveArm(&bot);
+        }
         return true;
     }
 
